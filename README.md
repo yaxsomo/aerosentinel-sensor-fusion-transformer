@@ -1,42 +1,36 @@
-# Arduino_AHRS_System
-This is a compact realtime embedded Inertial Measurement System (IMU) based Attitude and Heading Reference System (AHRS) using Recursive Least Squares (RLS) for magnetometer calibration, and EKF/UKF for sensor fusion for Arduino platform.
 
-- It's not using Eigen (small source code - more simple to understand).
-- It's not using C++ Standard Library/std (for embedded consideration).
-- If you set `SYSTEM_IMPLEMENTATION` to `SYSTEM_IMPLEMENTATION_EMBEDDED_NO_PRINT` in `konfig.h`, the code is platform agnostic (not using any library beside these C header files: `stdlib.h`, `stdint.h`, and `math.h`).
-- There's no malloc/new/free dynamic memory allocation (for real time application). But it use heavy stack local variables, so you need to run it through memory analyzer if you are really concerned about implement this in mission critical hard real time application.
 
-This code is the application of Extended Kalman Filter and Unscented Kalman Filter library I've made.
+#
 
-- The EKF library and documentation can be found in [this repository](https://github.com/pronenewbits/Embedded_EKF_Library).
+The Aerosentinel Sensor Fusion Transformer is a compact realtime embedded Inertial Measurement System (IMU) based Attitude and Heading Reference System (AHRS) using Recursive Least Squares (RLS) for magnetometer calibration, individual Unscented Kalman Filter for sensor fusion on [Aerosentinel Argus Navigation Module](https://github.com/yaxsomo/aerosentinel-argus), and combined state-estimation.
+
+## Features:
+- Eigen library not used in this repo (small source code - more simple to understand).
+- No third-party library used beside these C header files: `stdlib.h`, `stdint.h`, and `math.h`.
+- Setting `SYSTEM_IMPLEMENTATION` to `SYSTEM_IMPLEMENTATION_EMBEDDED_NO_PRINT` in `konfig.h`, makes the code platform-indipendent.
+- There's no malloc/new/free dynamic memory allocation (for real time application). However, heavy stack local variables are used, so consider execute it through a memory analyzer if the implementation in  **mission-critical hard real-time applications** is a concern.
+
 - The UKF library and documentation can be found in [this repository](https://github.com/pronenewbits/Embedded_UKF_Library).
 
 Please read them to gain insight on how I implement the filters.
 
-
 # The Background
 
-This repository is made to explain the basic system of AHRS system based on an IMU sensor. For ease of use and simple implementation, I use low cost MPU-9250 sensor as the IMU sensor and Teensy 4.0 (an Arduino compatible platform) as the computing module. You can get the Teensy from [here](https://www.pjrc.com/store/teensy40.html), while you can get the MPU-9250 from, well, everywhere (just make sure the MPU-9250 module you get is 3.3V version).
+This repository is made to have ultra-precise attidude and orientation estimations for rocketry applications, and will be based on multiple IMUs (with different sensitivities) running at the same time.
 
-Before we delve deeper, some results for motivational purposes:
+Before we dive deeper, some results for motivational purposes:
 
-1. EKF result using single precision floating math:
-<p align="center"><img src="https://github.com/user-attachments/assets/0f8c66e1-e469-4758-9ae5-4c57324a37cd"></p>
-<p align="center">(See mp4 files for every result using EKF/UKF filter with single and double precision floating math).</p>
-
-
-2. UKF result using double precision floating math:
+[RESULTS TO BE ADDED]
+<!-- 2. UKF result using double precision floating math:
 <p align="center"><img src="https://github.com/user-attachments/assets/867dc891-3ecc-4242-a262-1d89f7d7026e"></p>
-<p align="center">(See mp4 files for every result using EKF/UKF filter with single and double precision floating math).</p>
+<p align="center">(See mp4 files for every result using EKF/UKF filter with single and double precision floating math).</p> -->
 
-3. Online hard-iron bias identification using RLS for magnetometer data compensation:
-<p align="center"><img src="https://github.com/user-attachments/assets/b6dd16d8-7063-44a1-baa8-1a8bb3d2ce78"></p>
-
-
+<!-- 3. Online hard-iron bias identification using RLS for magnetometer data compensation:
+<p align="center"><img src="https://github.com/user-attachments/assets/b6dd16d8-7063-44a1-baa8-1a8bb3d2ce78"></p> -->
 
 # The Theoretical Description
 
-The AHRS system implemented here consists of 2 major subsystems:
+The system implemented here consists of 2 major subsystems:
 
 ### Subsystem 1: The Sensor Fusion Algorithm
 
